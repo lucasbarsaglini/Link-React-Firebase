@@ -1,0 +1,13 @@
+.Logo{
+    margin-top: 45px;
+    margin-bottom: 30px;
+    color: #fff;
+    font-size: 55px;
+}
+
+.Logo-text{
+    background: linear-gradient(#E18700, #FFD43a);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
