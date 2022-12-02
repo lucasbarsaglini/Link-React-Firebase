@@ -47,3 +47,21 @@
     line-height: 150%;
     color: #000;
 }
+
+footer{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+@media screen and (max-widht: 550px) {
+    .home-conainer h1{
+        font-size: 25px;
+        text-align: center;
+    }
+
+    .link-text{
+        font-size: 14px;
+    }
+}
