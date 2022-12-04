@@ -5,6 +5,7 @@ import { auth } from '../../services/firebaseConnection'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { userNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { Input } from '../../components/Input'
 
 export default function Login(){
     const [email, setEmail] = useState("")
@@ -35,19 +36,19 @@ export default function Login(){
             <Logo/>
 
             <form className="form">
-                <input 
-                type="email" 
-                placeholder="Digite seu email..." 
-                value={email} 
-                onChange={ (e) => setEmail(e.target.value) }
+                <Input 
+                    type="email" 
+                    placeholder="Digite seu email..." 
+                    value={email} 
+                    onChange={ (e) => setEmail(e.target.value) }
                 />
 
-                <input 
-                type="password" 
-                placeholder="********" 
-                autoCapitalize="on"
-                value={password}
-                onChange={ (e) => setPassword(e.target.value) }
+                <Input 
+                    type="password" 
+                    placeholder="********" 
+                    autoCapitalize="on"
+                    value={password}
+                    onChange={ (e) => setPassword(e.target.value) }
                 />
 
                 <button type="submit">Acessar</button>
