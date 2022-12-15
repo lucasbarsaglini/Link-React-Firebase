@@ -4,16 +4,38 @@ import { Logo } from '../../components/Logo'
 import { Input } from '../../components/Input'
 import { MdAddLink } from 'react-icons/md'
 import { Fitrash2 } from 'react-icons/fa'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { db } from '../../services/firebaseConnection'
 import { addDoc, collection, onSnapshot, query, orderBy, doc, deleteDoc } from 'firebase/firestore'
 import { toast } from 'react-toastify'
 
 export default function Admin(){
     const [nameInput, setNameInput] = useState("")
-    const[urlInput, setUrlInput] = useState("")
-    const[backgroundColorInput, setBackgroundColorINput] = useState("#f1f1f1")
-    const[textColorInput, setTextColorInput] = useState("#121212")
+    const [urlInput, setUrlInput] = useState("")
+    const [backgroundColorInput, setBackgroundColorINput] = useState("#f1f1f1")
+    const [textColorInput, setTextColorInput] = useState("#121212")
+
+    const [links, setLinks] = useState([])
+
+    useEffect(() => {
+        const linksRef = collection(db, "links")
+        const queryRef = query(linksRef, orderBy("created", "asc"))
+        const unsub = onSnapshot(queryRef, (snapShot) => {
+            let lista = [];
+
+            snapShot.forEach((doc) => {
+                lista.push({
+                    id: doc.id,
+                    name: doc.data().name,
+                    url: doc.data().url,
+                    bg: doc.data().bg,
+                    color: doc.data().color
+                })
+            })
+            setLinks(lista);
+        })
+
+    }, [])
 
     async function handleRegister(e) {
         e.preventDefault();
@@ -41,6 +63,11 @@ export default function Admin(){
         })
 
 
+    }
+
+    async function handleDeleteLink(id){
+        const docRef = doc(db, "links", id)
+        await deleteDoc(docRef)
     }
 
     return(
@@ -100,14 +127,20 @@ export default function Admin(){
 
             <h2 className="title">Meus links</h2>
         
-            <article className="list animate-pop" style={{ backgroundColor: "#000", color: "#fff" }}>
-                <p>Teste</p>
-                <div>
-                    <button className="btn-delete">
-                        <Fitrash2 size={18} color="#fff" />
-                    </button>
-                </div>
+            {links.map((item, index) => (
+            <article 
+                key={index}
+                className="list animate-pop" 
+                style={{ backgroundColor: item.bg, color: item.color }}
+                >
+                    <p>{item.name}</p>
+                    <div>
+                        <button className="btn-delete" onClick={() => handleDeleteLink(item.id)}>
+                            <Fitrash2 size={18} color="#fff" />
+                        </button>
+                    </div>
             </article>
+            ))}
         </div>
     )
 }
